@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.1",
+    "@heroicons/react": "^2.2.0",
     "@supabase/supabase-js": "^2.49.4",
     "axios": "^1.8.4",
     "cheerio": "^1.0.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "next": "15.3.0",
     "puppeteer": "^24.6.1",
     "react": "^19.0.0",
+    "react-datepicker": "^8.3.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {

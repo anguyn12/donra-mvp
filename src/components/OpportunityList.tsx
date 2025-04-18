@@ -7,48 +7,43 @@ type Opportunity = {
   id: string
   title: string
   location: string
+  time: string
+  description: string
   link: string
+  source?: string
 }
 
-export default function OpportunityList() {
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([])
+type Props = {
+  opportunities: Opportunity[]
+}
 
-  useEffect(() => {
-    const fetchOpportunities = async () => {
-      const { data, error } = await supabase
-        .from('opportunities')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching opportunities:', error)
-      } else {
-        setOpportunities(data)
-      }
-    }
-
-    fetchOpportunities()
-  }, [])
+export default function OpportunityList({ opportunities }: Props) {
+  if (!opportunities || opportunities.length === 0) {
+    return <p className="text-center text-gray-400 text-sm">No opportunities found.</p>
+  }
 
   return (
-    <div className="space-y-4">
-      {opportunities.map((opp) => (
-        <div
-          key={opp.id}
-          className="border rounded p-4 shadow-sm hover:shadow-md transition"
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    {opportunities.map((opp) => (
+      <div
+        key={`${opp.title}-${opp.link}`}
+        className="bg-white border border-gray-100 shadow-sm rounded-xl p-5 hover:shadow-md transition-all"
+      >
+        <h3 className="text-lg font-medium">{opp.title}</h3>
+        <p className="text-sm text-gray-500 mt-1">📍 {opp.location}</p>
+        <p className="text-sm text-gray-400">🕒 {opp.time}</p>
+        <p className="text-sm text-gray-600 mt-2 line-clamp-3">{opp.description}</p>
+        <a
+          href={opp.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-4 text-sm text-blue-600 hover:underline"
         >
-          <h2 className="text-lg font-semibold">{opp.title}</h2>
-          <p className="text-sm text-gray-500">{opp.location}</p>
-          <a
-            href={opp.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mt-2 text-blue-600 underline text-sm"
-          >
-            View & Sign Up
-          </a>
-        </div>
-      ))}
-    </div>
+          View Opportunity →
+        </a>
+      </div>
+    ))}
+  </div>
+  
   )
 }
